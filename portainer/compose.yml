@@ -1,0 +1,29 @@
+---
+services:
+  portainer:
+    container_name: portainer
+    image: docker.io/portainer/portainer-ce:alpine
+      #   ports:
+      #   - 8000:8000
+    volumes:
+      - /run/docker.sock:/var/run/docker.sock
+      - portainer-data:/data
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.portainer.loadbalancer.server.port=9000
+      - traefik.http.routers.portainer.service=portainer
+      - traefik.http.routers.portainer.entrypoints=websecure
+      - traefik.http.routers.portainer.rule=Host(`${PORTAINER_HOSTNAME}`)
+      - traefik.http.routers.portainer.tls=true
+      - traefik.http.routers.portainer.tls.certresolver=cloudflare
+    networks:
+      - asgard
+    restart: unless-stopped
+
+networks:
+  asgard:
+    external: true
+
+volumes:
+  portainer-data:
+    driver: local

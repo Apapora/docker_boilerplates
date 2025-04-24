@@ -1,0 +1,25 @@
+---
+networks:
+  monitor:
+    external: true
+  asgard:
+    external: true
+
+volumes:
+  prometheus-data:
+    driver: local
+
+services:
+  prometheus:
+    image: docker.io/prom/prometheus:v3.3.0
+    container_name: prometheus
+    networks:
+      - asgard
+      - monitor
+    ports:
+      - 9090:9090
+    command: "--config.file=/etc/prometheus/prometheus.yaml"
+    volumes:
+      - ./config/prometheus.yaml:/etc/prometheus/prometheus.yaml:ro
+      - prometheus-data:/prometheus
+    restart: unless-stopped

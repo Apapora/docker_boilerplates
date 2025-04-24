@@ -1,0 +1,22 @@
+---
+volumes:
+  grafana-data:
+    driver: local
+
+networks:
+  monitor:
+    external: true
+
+services:
+  grafana:
+    image: docker.io/grafana/grafana-oss:11.6.0
+    container_name: grafana
+    networks:
+      - monitor
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD="testi"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    restart: unless-stopped

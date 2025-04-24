@@ -1,0 +1,20 @@
+---
+networks:
+  monitor:
+    external: true
+
+services:
+  node_exporter:
+    image: prom/node-exporter:latest
+    container_name: node_exporter
+    ports:
+      - "9100:9100"
+    command:
+      - '--path.rootfs=/host'
+        #network_mode: host
+    networks:
+      - monitor
+        #pid: host
+    restart: unless-stopped
+    volumes:
+      - '/:/host:ro,rslave'
