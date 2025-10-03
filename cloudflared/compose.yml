@@ -1,7 +1,6 @@
 ---
 networks:
   asgard:
-    external: true
 
 services:
   cloudflaretunnel:
