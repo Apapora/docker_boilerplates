@@ -8,6 +8,8 @@ services:
     container_name: cloudflaretunnel
     image: cloudflare/cloudflared:latest
     restart: unless-stopped
+    env_file:
+      - /etc/secrets.env
     environment:
       - TUNNEL_TOKEN=$TUNNEL_TOKEN
     command: tunnel --no-autoupdate run
