@@ -1,8 +1,10 @@
 ---
 services:
   n8n:
-    image: docker.n8n.io/n8nio/n8n
+    image: docker.n8n.io/n8nio/n8n:1.114.0
     restart: unless-stopped
+    env_file:
+      - /etc/secrets.env
     ports:
       - 5678:5678
     networks:
@@ -10,7 +12,7 @@ services:
     labels:
       - traefik.http.services.nginx.loadbalancer.server.port=5678
       - traefik.enable=true
-      - traefik.http.routers.n8n.rule=Host(`${N8N_HOSTNAME}`)
+      - traefik.http.routers.n8n.rule=Host(`${N8N_HOSTNAME}.${DOMAIN_NAME}`)
       - traefik.http.routers.n8n.tls=true
       - traefik.http.routers.n8n.entrypoints=web,websecure
       - traefik.http.routers.n8n.tls.certresolver=cloudflare
@@ -29,7 +31,7 @@ services:
       - N8N_PROTOCOL=https
       - N8N_RUNNERS_ENABLED=true
       - NODE_ENV=production
-      - WEBHOOK_URL=https://${N8N_HOSTNAME}/
+      - WEBHOOK_URL=https://${N8N_HOSTNAME}.${DOMAIN_NAME}/
       - GENERIC_TIMEZONE=${TIMEZONE}
     volumes:
       - n8n_data:/home/node/.n8n
