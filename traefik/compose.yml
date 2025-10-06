@@ -1,7 +1,7 @@
 ---
 services:
   traefik:
-    image: docker.io/library/traefik:v3.4.1
+    image: docker.io/library/traefik:v3.5.3
     container_name: traefik
     ports:
       - 80:80
@@ -13,8 +13,8 @@ services:
       - /run/docker.sock:/run/docker.sock:ro
       - ./config/:/etc/traefik/:ro
       - ./certs/:/var/traefik/certs/:rw
-    environment:
-      - CF_DNS_API_TOKEN=$CF_API_TOK
+    env_file:
+      - /etc/secrets.env
     networks:
       - asgard
     restart: unless-stopped
