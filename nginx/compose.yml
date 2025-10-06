@@ -1,8 +1,10 @@
 ---
 services:
   nginx:
-    image: docker.io/library/nginx:1.26.3-alpine
+    image: docker.io/library/nginx:1.28.0-alpine
     container_name: nginx
+    env_file:
+      - /etc/secrets.env
     volumes:
       - ./config/default.conf:/etc/nginx/conf.d/default.conf:ro
       - ./data:/usr/share/nginx/html:ro
@@ -10,7 +12,7 @@ services:
       - traefik.enable=true
       - traefik.http.services.nginx.loadbalancer.server.port=80
       - traefik.http.routers.nginx.entrypoints=web, websecure
-      - traefik.http.routers.nginx.rule=Host(`${NGINX_HOSTNAME}`)
+      - traefik.http.routers.nginx.rule=Host(`${NGINX_HOSTNAME}.${DOMAIN_NAME}`)
       - traefik.http.routers.nginx.tls=true
       - traefik.http.routers.nginx.tls.certresolver=cloudflare
       - traefik.http.routers.nginx.service=nginx
