@@ -13,12 +13,12 @@ services:
       - TZ=Asia/Taipei
       - FTLCONF_webserver_api_password=$FTLCONF_webserver_api_password
       - FTLCONF_dns_upstreams=${FTLCONF_dns_upstreams:-8.8.8.8;8.8.4.4}
-      - FTLCONF_dns_listeningMode=all
     volumes:
      # - etc_dnsmasq:/etc/dnsmasq.d
       - etc_pihole:/etc/pihole
     networks:
-      asgard:
+      macvlan0:
+        ipv4_address: 192.168.1.201
     #labels:
      # - traefik.enable=true
       # Pihole Web Interface
@@ -37,5 +37,5 @@ volumes:
     driver: local
 
 networks:
-  asgard:
+  macvlan0:
     external: true
