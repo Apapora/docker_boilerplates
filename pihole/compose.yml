@@ -4,8 +4,8 @@ services:
     container_name: pihole
     image: docker.io/pihole/pihole:latest
     ports:
-      # - 53:53/tcp
-      # - 53:53/udp
+      - 53:53/tcp
+      - 53:53/udp
         # - 67:67/udp
       - 8081:80/tcp
       - 8443:443/tcp
@@ -14,21 +14,19 @@ services:
       - FTLCONF_webserver_api_password=$FTLCONF_webserver_api_password
       - FTLCONF_dns_upstreams=${FTLCONF_dns_upstreams:-8.8.8.8;8.8.4.4}
     volumes:
-      #  - etc_dnsmasq:/etc/dnsmasq.d
+      - etc_dnsmasq:/etc/dnsmasq.d
       - etc_pihole:/etc/pihole
     networks:
       asgard:
-      macvlan0:
-        ipv4_address: 192.168.1.201
-    labels:
-      - traefik.enable=true
+    #labels:
+     # - traefik.enable=true
       # Pihole Web Interface
-      - traefik.http.routers.pihole.rule=Host(`${PIHOLE_HOSTNAME}`)
-      - traefik.http.routers.pihole.entrypoints=websecure
-      - traefik.http.routers.pihole.tls=true
-      - traefik.http.routers.pihole.tls.certresolver=cloudflare
-      - traefik.http.routers.pihole.service=pihole
-      - traefik.http.services.pihole.loadBalancer.server.port=80
+     # - traefik.http.routers.pihole.rule=Host(`${PIHOLE_HOSTNAME}`)
+     # - traefik.http.routers.pihole.entrypoints=websecure
+     # - traefik.http.routers.pihole.tls=true
+     # - traefik.http.routers.pihole.tls.certresolver=cloudflare
+     # - traefik.http.routers.pihole.service=pihole
+     # - traefik.http.services.pihole.loadBalancer.server.port=80
     restart: unless-stopped
 
 volumes:
@@ -38,7 +36,5 @@ volumes:
     driver: local
 
 networks:
-  macvlan0:
-    external: true
   asgard:
     external: true
