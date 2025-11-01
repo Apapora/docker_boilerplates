@@ -4,8 +4,8 @@ services:
     container_name: pihole
     image: docker.io/pihole/pihole:latest
     ports:
-      - 53:53/tcp
-      - 53:53/udp
+      # - 53:53/tcp
+      # - 53:53/udp
         # - 67:67/udp
       - 8081:80/tcp
       - 8443:443/tcp
@@ -17,7 +17,9 @@ services:
       #  - etc_dnsmasq:/etc/dnsmasq.d
       - etc_pihole:/etc/pihole
     networks:
-      - asgard
+      asgard:
+      macvlan0:
+        ipv4_address: 192.168.1.201
     labels:
       - traefik.enable=true
       # Pihole Web Interface
@@ -36,5 +38,7 @@ volumes:
     driver: local
 
 networks:
+  macvlan0:
+    external: true
   asgard:
     external: true
