@@ -15,7 +15,7 @@ services:
       - FTLCONF_dns_upstreams=${FTLCONF_dns_upstreams:-8.8.8.8;8.8.4.4}
       - FTLCONF_dns_listeningMode=all
     volumes:
-      - etc_dnsmasq:/etc/dnsmasq.d
+     # - etc_dnsmasq:/etc/dnsmasq.d
       - etc_pihole:/etc/pihole
     networks:
       macvlan0:
@@ -32,8 +32,8 @@ services:
     restart: unless-stopped
 
 volumes:
-  etc_dnsmasq:
-    driver: local
+  #etc_dnsmasq:
+  #  driver: local
   etc_pihole:
     driver: local
 
