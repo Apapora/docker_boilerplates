@@ -32,8 +32,8 @@ services:
     restart: unless-stopped
 
 volumes:
-  #etc_dnsmasq:
-  #  driver: local
+  etc_dnsmasq:
+    driver: local
   etc_pihole:
     driver: local
 
